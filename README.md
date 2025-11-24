@@ -1,6 +1,6 @@
 # Loyalteez WordPress Plugin
 
-[![Try Live Demo](https://img.shields.io/badge/Try_Live_Demo-WordPress_Playground-blue?style=for-the-badge&logo=wordpress)](https://playground.wordpress.net/?plugin=https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)
+[![Try Live Demo](https://img.shields.io/badge/Try_Live_Demo-WordPress_Playground-blue?style=for-the-badge&logo=wordpress)](https://playground.wordpress.net/?plugin=https://api.loyalteez.app/loyalteez-api/wordpress-plugin.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)
 
 Integrate your WordPress site with the Loyalteez Ecosystem. Automatically reward users with LTZ tokens for engaging with your content.
 
@@ -17,7 +17,7 @@ Integrate your WordPress site with the Loyalteez Ecosystem. Automatically reward
 
 You can try this plugin instantly in your browser without installing anything.
 
-**[Click here to launch the Live Demo](https://playground.wordpress.net/?plugin=https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)**
+**[Click here to launch the Live Demo](https://playground.wordpress.net/?plugin=https://api.loyalteez.app/loyalteez-api/wordpress-plugin.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)**
 
 See [TESTING.md](TESTING.md) for details on how to use the playground environment.
 

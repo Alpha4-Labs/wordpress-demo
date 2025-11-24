@@ -4,7 +4,7 @@ You can test this plugin instantly in your browser without installing WordPress,
 
 ## ⚡ Quick Start (Browser)
 
-1.  **[Click here to launch a live demo](https://playground.wordpress.net/?plugin=https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)**
+1.  **[Click here to launch a live demo](https://playground.wordpress.net/?plugin=https://api.loyalteez.app/loyalteez-api/wordpress-plugin.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)**
 2.  This will:
     *   Spin up a temporary WordPress site in your browser (WASM).
     *   Automatically install and activate the **Loyalteez Rewards** plugin.

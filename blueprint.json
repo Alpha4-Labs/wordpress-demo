@@ -14,7 +14,7 @@
             "step": "installPlugin",
             "pluginZipFile": {
                 "resource": "url",
-                "url": "https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip"
+                "url": "https://api.loyalteez.app/loyalteez-api/wordpress-plugin.zip"
             }
         }
     ]
