@@ -85,10 +85,42 @@ class Loyalteez_API {
 
         if ($response_code >= 200 && $response_code < 300) {
             $this->log_debug('Event sent successfully', ['response' => $response_body]);
+            
+            // Parse response to get more details
+            $response_data = json_decode($response_body, true);
+            if ($response_data && isset($response_data['message'])) {
+                $this->log_debug('Success message', ['message' => $response_data['message']]);
+            }
+            
             return true;
         } else {
-            $this->log_error("API Error ($response_code): $response_body");
-            return new WP_Error('api_error', "Loyalteez API returned $response_code", ['body' => $response_body]);
+            // Parse error response for better error messages
+            $error_data = json_decode($response_body, true);
+            $error_message = "Loyalteez API returned $response_code";
+            
+            if ($error_data) {
+                if (isset($error_data['error'])) {
+                    $error_message = $error_data['error'];
+                } elseif (isset($error_data['message'])) {
+                    $error_message = $error_data['message'];
+                }
+                
+                // Add helpful context for common errors
+                if ($response_code === 403) {
+                    $error_message .= '. Check that your domain (' . $domain . ') is configured in Partner Portal → Settings → Profile → Authentication Methods → Domain.';
+                } elseif ($response_code === 400) {
+                    $error_message .= '. Verify your event name matches exactly what\'s configured in your Partner Portal.';
+                }
+            }
+            
+            $this->log_error("API Error ($response_code): $error_message");
+            $this->log_error("Full response: $response_body");
+            
+            return new WP_Error('api_error', $error_message, [
+                'code' => $response_code,
+                'body' => $response_body,
+                'parsed' => $error_data
+            ]);
         }
     }
 

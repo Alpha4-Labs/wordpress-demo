@@ -186,13 +186,23 @@ class Loyalteez_Admin {
             ]);
             
             if (is_wp_error($result_data)) {
+                $error_data = $result_data->get_error_data();
+                $error_message = $result_data->get_error_message();
+                
+                // Extract more details if available
+                $details = [
+                    'error_code' => $result_data->get_error_code(),
+                    'error_message' => $error_message
+                ];
+                
+                if (is_array($error_data)) {
+                    $details = array_merge($details, $error_data);
+                }
+                
                 $result = [
                     'success' => false,
-                    'message' => 'Test event failed: ' . $result_data->get_error_message(),
-                    'details' => [
-                        'error_code' => $result_data->get_error_code(),
-                        'error_data' => $result_data->get_error_data()
-                    ]
+                    'message' => 'Test event failed: ' . $error_message,
+                    'details' => $details
                 ];
             } else {
                 $result = [
