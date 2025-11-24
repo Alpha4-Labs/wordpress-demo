@@ -1,0 +1,15 @@
+# WordPress
+wp-content/
+wp-includes/
+wp-admin/
+wp-config.php
+.htaccess
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node/Build (if added later)
+node_modules/
+dist/
