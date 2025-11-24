@@ -1,0 +1,22 @@
+{
+    "landingPage": "/wp-admin/options-general.php?page=loyalteez-rewards",
+    "preferredVersions": {
+        "php": "8.0",
+        "wp": "latest"
+    },
+    "steps": [
+        {
+            "step": "login",
+            "username": "admin",
+            "password": "password"
+        },
+        {
+            "step": "installPlugin",
+            "pluginZipFile": {
+                "resource": "url",
+                "url": "https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip"
+            }
+        }
+    ]
+}
+
