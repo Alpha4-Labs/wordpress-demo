@@ -7,6 +7,8 @@ class Loyalteez_Admin {
         add_action('admin_init', [$this, 'register_settings']);
         // Handle custom events saving before WordPress processes the form
         add_action('admin_init', [$this, 'save_custom_events'], 5);
+        // Handle test event
+        add_action('admin_post_loyalteez_test_event', [$this, 'handle_test_event']);
     }
 
     public function add_admin_menu() {
@@ -147,5 +149,72 @@ class Loyalteez_Admin {
 
     public function display_settings_page() {
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/settings-page.php';
+    }
+    
+    /**
+     * Handle test event submission
+     */
+    public function handle_test_event() {
+        // Verify nonce
+        if (!isset($_POST['loyalteez_test_nonce']) || !wp_verify_nonce($_POST['loyalteez_test_nonce'], 'loyalteez_test_event')) {
+            wp_die('Security check failed');
+        }
+        
+        // Check permissions
+        if (!current_user_can('manage_options')) {
+            wp_die('You do not have permission to perform this action');
+        }
+        
+        $test_email = isset($_POST['test_email']) ? sanitize_email($_POST['test_email']) : '';
+        $test_event_name = isset($_POST['test_event_name']) ? sanitize_text_field($_POST['test_event_name']) : 'test_event';
+        
+        if (empty($test_email) || !is_email($test_email)) {
+            $result = [
+                'success' => false,
+                'message' => 'Invalid email address provided.',
+                'details' => []
+            ];
+        } else {
+            // Load API class and send test event
+            require_once plugin_dir_path(__FILE__) . 'class-api.php';
+            $api = new Loyalteez_API();
+            
+            $result_data = $api->send_event($test_event_name, $test_email, [
+                'test' => true,
+                'source' => 'admin_test',
+                'timestamp' => current_time('mysql', true)
+            ]);
+            
+            if (is_wp_error($result_data)) {
+                $result = [
+                    'success' => false,
+                    'message' => 'Test event failed: ' . $result_data->get_error_message(),
+                    'details' => [
+                        'error_code' => $result_data->get_error_code(),
+                        'error_data' => $result_data->get_error_data()
+                    ]
+                ];
+            } else {
+                $result = [
+                    'success' => true,
+                    'message' => 'Test event sent successfully! Check your Partner Portal to see if the event was received.',
+                    'details' => [
+                        'event_name' => $test_event_name,
+                        'email' => $test_email,
+                        'brand_id' => get_option('loyalteez_brand_id')
+                    ]
+                ];
+            }
+        }
+        
+        // Redirect back with result
+        $redirect_url = add_query_arg([
+            'page' => 'loyalteez-rewards',
+            'settings-updated' => 'true',
+            'test_result' => base64_encode(json_encode($result))
+        ], admin_url('options-general.php'));
+        
+        wp_redirect($redirect_url);
+        exit;
     }
 }

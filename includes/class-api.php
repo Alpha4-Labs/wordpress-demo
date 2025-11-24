@@ -55,17 +55,36 @@ class Loyalteez_API {
             'data_format' => 'body',
         ];
 
+        // Log request for debugging
+        $this->log_debug('Sending event to Loyalteez API', [
+            'url' => $this->api_url,
+            'event_type' => $event_type,
+            'email' => $email,
+            'domain' => $domain,
+            'brand_id' => $this->brand_id
+        ]);
+
         $response = wp_remote_post($this->api_url, $args);
 
         if (is_wp_error($response)) {
-            $this->log_error($response->get_error_message());
+            $error_message = $response->get_error_message();
+            $this->log_error("WP_Error: $error_message");
+            $this->log_debug('Request failed', ['error' => $error_message, 'args' => $args]);
             return $response;
         }
 
         $response_code = wp_remote_retrieve_response_code($response);
         $response_body = wp_remote_retrieve_body($response);
+        
+        // Log response for debugging
+        $this->log_debug('API Response', [
+            'code' => $response_code,
+            'body' => $response_body,
+            'headers' => wp_remote_retrieve_headers($response)
+        ]);
 
         if ($response_code >= 200 && $response_code < 300) {
+            $this->log_debug('Event sent successfully', ['response' => $response_body]);
             return true;
         } else {
             $this->log_error("API Error ($response_code): $response_body");
@@ -78,7 +97,19 @@ class Loyalteez_API {
      */
     private function log_error($message) {
         if (defined('WP_DEBUG') && WP_DEBUG && get_option('loyalteez_debug_mode')) {
-            error_log('[Loyalteez] ' . $message);
+            error_log('[Loyalteez Error] ' . $message);
+        }
+    }
+    
+    /**
+     * Log debug info to WP debug log if enabled
+     */
+    private function log_debug($message, $data = []) {
+        if (defined('WP_DEBUG') && WP_DEBUG && get_option('loyalteez_debug_mode')) {
+            error_log('[Loyalteez Debug] ' . $message);
+            if (!empty($data)) {
+                error_log(print_r($data, true));
+            }
         }
     }
 }

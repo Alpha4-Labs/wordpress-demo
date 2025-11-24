@@ -29,7 +29,7 @@ $common_hooks = [
     
     <?php 
     // Show success message with link to test site
-    if (isset($_GET['settings-updated']) && $_GET['settings-updated'] === 'true') : 
+    if (isset($_GET['settings-updated']) && $_GET['settings-updated'] === 'true' && !isset($_GET['test_result'])) : 
     ?>
     <div class="notice notice-success is-dismissible" style="padding: 12px;">
         <p><strong>✅ Settings saved successfully!</strong></p>
@@ -42,10 +42,36 @@ $common_hooks = [
             </a>
         </p>
         <p class="description" style="margin-top: 8px;">
-            Open your browser's Developer Tools (F12) → Network tab to see API calls when events trigger.
+            <strong>Note:</strong> Events trigger automatically when actions occur (comments, signups, etc.). 
+            Use the "Test API Connection" section below to manually test your configuration.
         </p>
     </div>
     <?php endif; ?>
+    
+    <?php
+    // Show configuration status
+    $brand_id = get_option('loyalteez_brand_id');
+    $events = get_option('loyalteez_custom_events', []);
+    $enabled_events = array_filter($events, function($e) { return !empty($e['enabled']); });
+    
+    if (empty($brand_id)) {
+        echo '<div class="notice notice-warning is-dismissible" style="padding: 12px;">';
+        echo '<p><strong>⚠️ Configuration Incomplete</strong></p>';
+        echo '<p>Please enter your Brand ID above to enable rewards.</p>';
+        echo '</div>';
+    } elseif (empty($enabled_events)) {
+        echo '<div class="notice notice-warning is-dismissible" style="padding: 12px;">';
+        echo '<p><strong>⚠️ No Events Enabled</strong></p>';
+        echo '<p>Add and enable at least one event above to start rewarding users.</p>';
+        echo '</div>';
+    } else {
+        echo '<div class="notice notice-info is-dismissible" style="padding: 12px;">';
+        echo '<p><strong>ℹ️ Active Configuration</strong></p>';
+        echo '<p>Brand ID: <code>' . esc_html($brand_id) . '</code> | ';
+        echo 'Active Events: <strong>' . count($enabled_events) . '</strong></p>';
+        echo '</div>';
+    }
+    ?>
 
     <form action="options.php" method="post" id="loyalteez-settings-form">
         <?php
@@ -154,6 +180,52 @@ $common_hooks = [
 
         <?php submit_button(); ?>
     </form>
+    
+    <!-- Test API Connection -->
+    <div class="card" style="max-width: 800px; margin-top: 20px;">
+        <h2 style="padding: 12px; border-bottom: 1px solid #ddd;">🧪 Test API Connection</h2>
+        <div style="padding: 15px;">
+            <p class="description">Test if your configuration is working by sending a test event to the Loyalteez API.</p>
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-top: 15px;">
+                <input type="hidden" name="action" value="loyalteez_test_event" />
+                <?php wp_nonce_field('loyalteez_test_event', 'loyalteez_test_nonce'); ?>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="test_email">Test Email</label></th>
+                        <td>
+                            <input type="email" name="test_email" id="test_email" value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>" class="regular-text" required />
+                            <p class="description">Email address to use for the test event.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="test_event_name">Event Name</label></th>
+                        <td>
+                            <input type="text" name="test_event_name" id="test_event_name" value="test_event" class="regular-text" required />
+                            <p class="description">Event name to test (must exist in your Partner Portal).</p>
+                        </td>
+                    </tr>
+                </table>
+                <?php submit_button('Send Test Event', 'secondary', 'test_event', false); ?>
+            </form>
+            
+            <?php
+            // Show test results if available
+            if (isset($_GET['test_result'])) {
+                $result = json_decode(base64_decode($_GET['test_result']), true);
+                if ($result) {
+                    $status_class = $result['success'] ? 'notice-success' : 'notice-error';
+                    echo '<div class="notice ' . esc_attr($status_class) . ' is-dismissible" style="margin-top: 15px;">';
+                    echo '<p><strong>' . ($result['success'] ? '✅ Success!' : '❌ Failed') . '</strong></p>';
+                    echo '<p>' . esc_html($result['message']) . '</p>';
+                    if (!empty($result['details'])) {
+                        echo '<pre style="background: #f5f5f5; padding: 10px; overflow-x: auto;">' . esc_html(print_r($result['details'], true)) . '</pre>';
+                    }
+                    echo '</div>';
+                }
+            }
+            ?>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
