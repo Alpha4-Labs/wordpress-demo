@@ -26,15 +26,21 @@ class Loyalteez_API {
             return new WP_Error('invalid_email', 'Invalid email address provided.');
         }
 
+        // Extract just the hostname from site URL for domain validation
+        $site_url = get_site_url();
+        $parsed_url = parse_url($site_url);
+        $domain = isset($parsed_url['host']) ? $parsed_url['host'] : $site_url;
+        
         $body = [
             'brandId'   => $this->brand_id,
             'eventType' => $event_type,
             'userEmail' => $email,
-            'domain'    => get_site_url(), // Use site URL as domain context
+            'domain'    => $domain, // Just the hostname, not full URL
             'metadata'  => array_merge([
-                'platform'  => 'wordpress',
-                'timestamp' => current_time('c'),
-                'source_url'=> get_permalink() ?: home_url(),
+                'platform'   => 'wordpress',
+                'timestamp'  => current_time('c'),
+                'source_url' => get_permalink() ?: home_url(),
+                'site_url'   => $site_url, // Full URL in metadata for reference
             ], $metadata)
         ];
 
