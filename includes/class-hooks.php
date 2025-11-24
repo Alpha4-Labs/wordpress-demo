@@ -54,7 +54,8 @@ class Loyalteez_Hooks {
         $email = $comment->comment_author_email;
 
         if ($email) {
-            $this->api->send_event('post_comment', $email, [
+            $event_name = get_option('loyalteez_event_name_comments', 'post_comment');
+            $this->api->send_event($event_name, $email, [
                 'comment_id' => $comment_id,
                 'post_id' => $comment->comment_post_ID
             ]);
@@ -67,7 +68,8 @@ class Loyalteez_Hooks {
     public function handle_registration($user_id) {
         $user = get_userdata($user_id);
         if ($user) {
-            $this->api->send_event('user_registration', $user->user_email, [
+            $event_name = get_option('loyalteez_event_name_signups', 'user_registration');
+            $this->api->send_event($event_name, $user->user_email, [
                 'user_id' => $user_id,
                 'username' => $user->user_login
             ]);
@@ -84,7 +86,8 @@ class Loyalteez_Hooks {
 
             if (get_transient($transient_key) === false) {
                 $user = wp_get_current_user();
-                $result = $this->api->send_event('daily_visit', $user->user_email, [
+                $event_name = get_option('loyalteez_event_name_daily_visit', 'daily_visit');
+                $result = $this->api->send_event($event_name, $user->user_email, [
                     'user_id' => $user_id
                 ]);
 
@@ -116,6 +119,7 @@ class Loyalteez_Hooks {
             wp_send_json_error(['message' => 'Email required']);
         }
 
+        // Note: Share event name currently hardcoded as 'content_share' or could be added to settings
         $result = $this->api->send_event('content_share', $email, [
             'shared_url' => $url
         ]);
@@ -127,4 +131,3 @@ class Loyalteez_Hooks {
         }
     }
 }
-

@@ -27,21 +27,42 @@
             <tr valign="top">
                 <th scope="row">Reward Events</th>
                 <td>
-                    <fieldset>
+                    <p class="description" style="margin-bottom: 15px;">Enable events and map them to the exact <strong>Event Name</strong> defined in your Partner Portal.</p>
+                    
+                    <fieldset style="margin-bottom: 15px; border: 1px solid #ddd; padding: 15px; background: #fff;">
+                        <legend style="font-weight: 600;">Comments</legend>
                         <label for="loyalteez_reward_comments">
                             <input type="checkbox" name="loyalteez_reward_comments" id="loyalteez_reward_comments" value="1" <?php checked(1, get_option('loyalteez_reward_comments'), true); ?> />
-                            Reward Post Comments
+                            Enable Comment Rewards
                         </label>
                         <br/>
+                        <label for="loyalteez_event_name_comments" style="display: inline-block; margin-top: 8px;">Event Name:</label>
+                        <input type="text" name="loyalteez_event_name_comments" id="loyalteez_event_name_comments" value="<?php echo esc_attr(get_option('loyalteez_event_name_comments', 'post_comment')); ?>" class="regular-text" placeholder="post_comment" />
+                        <p class="description">Default: <code>post_comment</code></p>
+                    </fieldset>
+
+                    <fieldset style="margin-bottom: 15px; border: 1px solid #ddd; padding: 15px; background: #fff;">
+                        <legend style="font-weight: 600;">User Registration</legend>
                         <label for="loyalteez_reward_signups">
                             <input type="checkbox" name="loyalteez_reward_signups" id="loyalteez_reward_signups" value="1" <?php checked(1, get_option('loyalteez_reward_signups'), true); ?> />
-                            Reward New User Registrations
+                            Enable Signup Rewards
                         </label>
                         <br/>
+                        <label for="loyalteez_event_name_signups" style="display: inline-block; margin-top: 8px;">Event Name:</label>
+                        <input type="text" name="loyalteez_event_name_signups" id="loyalteez_event_name_signups" value="<?php echo esc_attr(get_option('loyalteez_event_name_signups', 'user_registration')); ?>" class="regular-text" placeholder="user_registration" />
+                        <p class="description">Default: <code>user_registration</code></p>
+                    </fieldset>
+
+                    <fieldset style="margin-bottom: 15px; border: 1px solid #ddd; padding: 15px; background: #fff;">
+                        <legend style="font-weight: 600;">Daily Visit</legend>
                         <label for="loyalteez_reward_daily_visit">
                             <input type="checkbox" name="loyalteez_reward_daily_visit" id="loyalteez_reward_daily_visit" value="1" <?php checked(1, get_option('loyalteez_reward_daily_visit'), true); ?> />
-                            Reward Daily Visits (Logged-in Users)
+                            Enable Daily Visit Rewards
                         </label>
+                        <br/>
+                        <label for="loyalteez_event_name_daily_visit" style="display: inline-block; margin-top: 8px;">Event Name:</label>
+                        <input type="text" name="loyalteez_event_name_daily_visit" id="loyalteez_event_name_daily_visit" value="<?php echo esc_attr(get_option('loyalteez_event_name_daily_visit', 'daily_visit')); ?>" class="regular-text" placeholder="daily_visit" />
+                        <p class="description">Default: <code>daily_visit</code></p>
                     </fieldset>
                 </td>
             </tr>
@@ -61,4 +82,3 @@
         <?php submit_button(); ?>
     </form>
 </div>
-

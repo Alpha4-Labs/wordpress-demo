@@ -19,9 +19,17 @@ class Loyalteez_Admin {
 
     public function register_settings() {
         register_setting('loyalteez_options_group', 'loyalteez_brand_id');
+        
+        // Toggles
         register_setting('loyalteez_options_group', 'loyalteez_reward_comments');
         register_setting('loyalteez_options_group', 'loyalteez_reward_signups');
         register_setting('loyalteez_options_group', 'loyalteez_reward_daily_visit');
+        
+        // Event Names
+        register_setting('loyalteez_options_group', 'loyalteez_event_name_comments');
+        register_setting('loyalteez_options_group', 'loyalteez_event_name_signups');
+        register_setting('loyalteez_options_group', 'loyalteez_event_name_daily_visit');
+        
         register_setting('loyalteez_options_group', 'loyalteez_debug_mode');
     }
 
@@ -29,4 +37,3 @@ class Loyalteez_Admin {
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/settings-page.php';
     }
 }
-

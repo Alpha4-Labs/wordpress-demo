@@ -1,5 +1,7 @@
 # Loyalteez WordPress Plugin
 
+[![Try Live Demo](https://img.shields.io/badge/Try_Live_Demo-WordPress_Playground-blue?style=for-the-badge&logo=wordpress)](https://playground.wordpress.net/?plugin=https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)
+
 Integrate your WordPress site with the Loyalteez Ecosystem. Automatically reward users with LTZ tokens for engaging with your content.
 
 ## Features
@@ -8,7 +10,16 @@ Integrate your WordPress site with the Loyalteez Ecosystem. Automatically reward
 - **Signup Rewards**: Reward new user registrations.
 - **Daily Visit Rewards**: Reward logged-in users for their first visit of the day.
 - **Social Sharing**: Conceptual implementation for rewarding content shares (via AJAX).
+- **Custom Event Mapping**: Map WordPress actions to your specific Loyalteez Event Names.
 - **Admin Dashboard**: Configure your Brand ID and toggle rewards easily.
+
+## ⚡ Quick Test
+
+You can try this plugin instantly in your browser without installing anything.
+
+**[Click here to launch the Live Demo](https://playground.wordpress.net/?plugin=https://github.com/Alpha4-Labs/wordpress-demo/archive/refs/heads/main.zip&url=/wp-admin/options-general.php?page=loyalteez-rewards)**
+
+See [TESTING.md](TESTING.md) for details on how to use the playground environment.
 
 ## Installation
 
@@ -25,6 +36,13 @@ Integrate your WordPress site with the Loyalteez Ecosystem. Automatically reward
 1.  Log in to [partner.loyalteez.app](https://partner.loyalteez.app).
 2.  Copy your Brand Wallet Address from the dashboard.
 3.  Paste it into the plugin settings.
+
+### Event Mapping
+You can customize the Event Name sent to Loyalteez for each action. This allows you to match the event names defined in your Partner Portal.
+
+*   **Comments**: Default `post_comment`
+*   **Signups**: Default `user_registration`
+*   **Daily Visit**: Default `daily_visit`
 
 ### Debug Mode
 Enable "Debug Mode" in settings to log API responses to your `wp-content/debug.log` file. Useful for troubleshooting connection issues.
