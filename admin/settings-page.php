@@ -26,6 +26,26 @@ $common_hooks = [
 
 <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+    
+    <?php 
+    // Show success message with link to test site
+    if (isset($_GET['settings-updated']) && $_GET['settings-updated'] === 'true') : 
+    ?>
+    <div class="notice notice-success is-dismissible" style="padding: 12px;">
+        <p><strong>✅ Settings saved successfully!</strong></p>
+        <p style="margin-top: 8px;">
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="button button-primary" target="_blank">
+                🌐 Visit Your Site to Test
+            </a>
+            <a href="<?php echo esc_url(home_url('/?p=1')); ?>" class="button" target="_blank" style="margin-left: 8px;">
+                📝 Test Comment on "Hello World" Post
+            </a>
+        </p>
+        <p class="description" style="margin-top: 8px;">
+            Open your browser's Developer Tools (F12) → Network tab to see API calls when events trigger.
+        </p>
+    </div>
+    <?php endif; ?>
 
     <form action="options.php" method="post" id="loyalteez-settings-form">
         <?php
