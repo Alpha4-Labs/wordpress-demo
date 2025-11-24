@@ -5,8 +5,10 @@ class Loyalteez_Admin {
     public function init() {
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_action('admin_init', [$this, 'register_settings']);
-        // Handle custom events saving before WordPress processes the form
-        add_action('admin_init', [$this, 'save_custom_events'], 5);
+        // Handle custom events saving - use higher priority to run after form submission
+        add_action('admin_init', [$this, 'save_custom_events'], 20);
+        // Also hook into the option update to catch it
+        add_filter('pre_update_option_loyalteez_custom_events', [$this, 'pre_update_custom_events'], 10, 2);
         // Handle test event
         add_action('admin_post_loyalteez_test_event', [$this, 'handle_test_event']);
     }
@@ -69,9 +71,10 @@ class Loyalteez_Admin {
     }
     
     /**
-     * Save custom events before WordPress processes the form
+     * Save custom events - handles form submission
      */
     public function save_custom_events() {
+        // Check if this is our settings form submission
         if (!isset($_POST['option_page']) || $_POST['option_page'] !== 'loyalteez_options_group') {
             return;
         }
@@ -80,13 +83,53 @@ class Loyalteez_Admin {
             return;
         }
         
+        // Check if form was submitted (either submit button or our hidden field)
+        if (!isset($_POST['submit']) && !isset($_POST['loyalteez_events_submitted'])) {
+            return;
+        }
+        
+        // Try to get events from POST array first
+        $events = null;
         if (isset($_POST['loyalteez_events']) && is_array($_POST['loyalteez_events'])) {
             $events = $this->sanitize_custom_events($_POST['loyalteez_events']);
-            update_option('loyalteez_custom_events', $events);
-        } else {
-            // If no events submitted, clear the option
-            update_option('loyalteez_custom_events', []);
+        } 
+        // Fallback: try JSON backup field
+        elseif (isset($_POST['loyalteez_events_json']) && !empty($_POST['loyalteez_events_json'])) {
+            $json_data = json_decode(stripslashes($_POST['loyalteez_events_json']), true);
+            if (is_array($json_data)) {
+                $events = $this->sanitize_custom_events($json_data);
+            }
         }
+        
+        // Save events if we have them
+        if ($events !== null) {
+            $result = update_option('loyalteez_custom_events', $events, false);
+            
+            // Debug logging
+            if (defined('WP_DEBUG') && WP_DEBUG && get_option('loyalteez_debug_mode')) {
+                error_log('[Loyalteez] Saved ' . count($events) . ' events. Update result: ' . ($result ? 'success' : 'no change'));
+                error_log('[Loyalteez] Events data: ' . print_r($events, true));
+            }
+        } elseif (isset($_POST['loyalteez_events_submitted'])) {
+            // Form was submitted but no events - user removed all events
+            update_option('loyalteez_custom_events', [], false);
+            
+            if (defined('WP_DEBUG') && WP_DEBUG && get_option('loyalteez_debug_mode')) {
+                error_log('[Loyalteez] Form submitted with no events - cleared option');
+            }
+        }
+        // If neither condition is met, preserve existing events
+    }
+    
+    /**
+     * Filter to handle custom events option update
+     */
+    public function pre_update_custom_events($value, $old_value) {
+        // If value is coming from POST, use that instead
+        if (isset($_POST['loyalteez_events']) && is_array($_POST['loyalteez_events'])) {
+            return $this->sanitize_custom_events($_POST['loyalteez_events']);
+        }
+        return $value;
     }
     
     /**

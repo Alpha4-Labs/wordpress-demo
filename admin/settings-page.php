@@ -78,6 +78,8 @@ $common_hooks = [
         settings_fields('loyalteez_options_group');
         do_settings_sections('loyalteez_options_group');
         ?>
+        <!-- Hidden field to ensure events data is preserved -->
+        <input type="hidden" name="loyalteez_events_submitted" value="1" />
 
         <table class="form-table">
             <tr valign="top">
@@ -231,6 +233,39 @@ $common_hooks = [
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     let eventIndex = <?php echo count($events); ?>;
+    
+        // Ensure events are saved when form is submitted
+    $('#loyalteez-settings-form').on('submit', function(e) {
+        // Collect all event data before form submission
+        const events = [];
+        $('.loyalteez-event-row').each(function() {
+            const $row = $(this);
+            const hook = $row.find('input[name*="[hook]"]').val();
+            const eventName = $row.find('input[name*="[event_name]"]').val();
+            const enabled = $row.find('input[name*="[enabled]"]').is(':checked') ? '1' : '0';
+            
+            if (hook && eventName) {
+                events.push({
+                    hook: hook.trim(),
+                    event_name: eventName.trim(),
+                    enabled: enabled
+                });
+            }
+        });
+        
+        // Log for debugging
+        console.log('[Loyalteez] Form submitting with events:', events);
+        
+        // Add JSON backup field in case WordPress strips array data
+        if ($('#loyalteez_events_json').length === 0) {
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'loyalteez_events_json',
+                name: 'loyalteez_events_json'
+            }).appendTo('#loyalteez-settings-form');
+        }
+        $('#loyalteez_events_json').val(JSON.stringify(events));
+    });
     
     // Add new event
     $('#loyalteez-add-event').on('click', function() {
