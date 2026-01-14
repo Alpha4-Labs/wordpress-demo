@@ -1,0 +1,356 @@
+/**
+ * Loyalteez Dashboard Styles
+ */
+
+.loyalteez-dashboard {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #8CBC99;
+}
+
+.dashboard-header h2 {
+    margin: 0 0 10px 0;
+    color: #8CBC99;
+    font-size: 28px;
+}
+
+.dashboard-header p {
+    margin: 0;
+    color: #666;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    transition: all 0.3s;
+}
+
+.tab-button:hover {
+    color: #8CBC99;
+}
+
+.tab-button.active {
+    color: #8CBC99;
+    border-bottom-color: #8CBC99;
+    font-weight: bold;
+}
+
+.dashboard-content {
+    min-height: 300px;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Balance Tab */
+.balance-display {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.balance-amount {
+    font-size: 48px;
+    font-weight: bold;
+    color: #8CBC99;
+    margin-bottom: 10px;
+}
+
+.balance-label {
+    font-size: 24px;
+    color: #666;
+}
+
+/* Streak Tab */
+.streak-display {
+    text-align: center;
+    padding: 20px;
+}
+
+.streak-info {
+    margin-bottom: 30px;
+}
+
+.streak-days {
+    font-size: 64px;
+    font-weight: bold;
+    color: #ff6b6b;
+    line-height: 1;
+}
+
+.streak-label {
+    font-size: 18px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.streak-multiplier {
+    font-size: 20px;
+    color: #8CBC99;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.check-in-btn {
+    padding: 12px 30px;
+    background: #8CBC99;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.check-in-btn:hover:not(:disabled) {
+    background: #7aa889;
+}
+
+.check-in-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.check-in-done {
+    padding: 15px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.next-milestone {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff3e0;
+    border-radius: 6px;
+    color: #e65100;
+}
+
+.milestones {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 6px;
+}
+
+.milestones h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.milestone-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.milestone-btn:hover {
+    background: #f57c00;
+}
+
+/* Leaderboard Tab */
+.leaderboard-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.leaderboard-filters select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.leaderboard-list li {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+
+.leaderboard-list .rank {
+    font-weight: bold;
+    width: 50px;
+    font-size: 18px;
+}
+
+.leaderboard-list .name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.leaderboard-list .value {
+    color: #8CBC99;
+    font-weight: bold;
+}
+
+/* Perks Tab */
+.perks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.perk-card {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.perk-card h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.perk-card p {
+    margin: 0 0 15px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.perk-cost {
+    font-size: 20px;
+    font-weight: bold;
+    color: #8CBC99;
+    margin-bottom: 5px;
+}
+
+.perk-available {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.redeem-btn {
+    width: 100%;
+    padding: 10px;
+    background: #8CBC99;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.redeem-btn:hover:not(:disabled) {
+    background: #7aa889;
+}
+
+.redeem-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Achievements Tab */
+.achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    border-left: 4px solid #ddd;
+}
+
+.achievement-item.unlocked {
+    border-left-color: #8CBC99;
+    background: #e8f5e9;
+}
+
+.achievement-item .status {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.achievement-item .type {
+    flex: 1;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.achievement-item .progress {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .loyalteez-dashboard {
+        padding: 15px;
+    }
+    
+    .dashboard-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-button {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+    
+    .balance-amount {
+        font-size: 36px;
+    }
+    
+    .streak-days {
+        font-size: 48px;
+    }
+    
+    .perks-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "name": "loyalteez-wordpress-plugin",
+    "version": "1.0.0",
+    "description": "Loyalteez rewards integration for WordPress sites",
+    "main": "loyalteez-rewards.php",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "zip": "zip -r loyalteez-rewards.zip loyalteez-rewards.php includes/ admin/ assets/ README.md RECIPES.md"
+    },
+    "keywords": [
+      "wordpress",
+      "loyalty",
+      "rewards",
+      "loyalteez"
+    ],
+    "author": "Loyalteez",
+    "license": "GPL-2.0+"
+  }
+  
